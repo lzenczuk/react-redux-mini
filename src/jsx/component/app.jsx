@@ -1,19 +1,11 @@
 import React from 'react';
 
-class App extends React.Component {
+import CanvasContainer from './canvas-container';
 
-    constructor(props) {
-        super(props);
-    }
+const App = () => (
+    <div>
+        <CanvasContainer />
+    </div>
+);
 
-    componentDidMount() {
-
-    }
-
-    render() {
-      return (<div>Hello</div>)
-    }
-}
-
-export default App;
-
+export default App
