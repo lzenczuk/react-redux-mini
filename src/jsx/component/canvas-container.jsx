@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import {editEntry, changeEntry, cancelEditEntry} from '../actions';
+import {editEntry, changeEntry, cancelEditEntry, newEntry} from '../actions';
 
 import BusinessCanvas from './business-canvas';
 
@@ -18,6 +18,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         onEntryEditCancel: () => {
             dispatch(cancelEditEntry())
+        },
+        onNewEntryClick: (block) => {
+            dispatch(newEntry(block))
         }
     }
 };

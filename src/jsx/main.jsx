@@ -10,13 +10,19 @@ import canvasApp from './reducers';
 
 import App from './component/app';
 
+import CanvasContainer from './component/canvas-container';
+import NewEntryEditor from './component/new-entry';
+
 attachFastClick(document.body);
 
 let store = createStore(canvasApp);
 
 ReactDOM.render(
     <Provider store={store}>
-        <App />
+        <div>
+            <CanvasContainer />
+            <NewEntryEditor />
+        </div>
     </Provider>,
     document.getElementById("app")
 );

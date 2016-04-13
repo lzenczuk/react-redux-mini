@@ -1,3 +1,5 @@
+export const NEW_ENTRY = 'NEW_ENTRY';
+export const CANCEL_NEW_ENTRY = 'CANCEL_NEW_ENTRY';
 export const ADD_ENTRY = 'ADD_ENTRY';
 export const REMOVE_ENTRY = 'REMOVE_ENTRY';
 export const MOVE_ENTRY = 'MOVE_ENTRY';
@@ -10,6 +12,19 @@ export function addEntry(block, content){
         type: ADD_ENTRY,
         block: block,
         content: content
+    }
+}
+
+export function newEntry(block){
+    return {
+        type: NEW_ENTRY,
+        block: block
+    }
+}
+
+export function cancelNewEntry(){
+    return {
+        type: CANCEL_NEW_ENTRY
     }
 }
 

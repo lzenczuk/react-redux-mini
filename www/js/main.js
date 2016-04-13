@@ -37448,11 +37448,17 @@ Object.defineProperty(exports, '__esModule', {
     value: true
 });
 exports.addEntry = addEntry;
+exports.newEntry = newEntry;
+exports.cancelNewEntry = cancelNewEntry;
 exports.editEntry = editEntry;
 exports.cancelEditEntry = cancelEditEntry;
 exports.changeEntry = changeEntry;
 exports.removeEntry = removeEntry;
 exports.moveEntry = moveEntry;
+var NEW_ENTRY = 'NEW_ENTRY';
+exports.NEW_ENTRY = NEW_ENTRY;
+var CANCEL_NEW_ENTRY = 'CANCEL_NEW_ENTRY';
+exports.CANCEL_NEW_ENTRY = CANCEL_NEW_ENTRY;
 var ADD_ENTRY = 'ADD_ENTRY';
 exports.ADD_ENTRY = ADD_ENTRY;
 var REMOVE_ENTRY = 'REMOVE_ENTRY';
@@ -37472,6 +37478,19 @@ function addEntry(block, content) {
         type: ADD_ENTRY,
         block: block,
         content: content
+    };
+}
+
+function newEntry(block) {
+    return {
+        type: NEW_ENTRY,
+        block: block
+    };
+}
+
+function cancelNewEntry() {
+    return {
+        type: CANCEL_NEW_ENTRY
     };
 }
 
@@ -37534,18 +37553,23 @@ var _canvasContainer = require('./canvas-container');
 
 var _canvasContainer2 = _interopRequireDefault(_canvasContainer);
 
+var _newEntry = require('./new-entry');
+
+var _newEntry2 = _interopRequireDefault(_newEntry);
+
 var App = function App() {
     return _react2['default'].createElement(
         'div',
         null,
-        _react2['default'].createElement(_canvasContainer2['default'], null)
+        _react2['default'].createElement(_canvasContainer2['default'], null),
+        _react2['default'].createElement(_newEntry2['default'], null)
     );
 };
 
 exports['default'] = App;
 module.exports = exports['default'];
 
-},{"./canvas-container":195,"react":179}],193:[function(require,module,exports){
+},{"./canvas-container":195,"./new-entry":198,"react":179}],193:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -37574,29 +37598,41 @@ var Block = function Block(_ref) {
     var onEntryClick = _ref.onEntryClick;
     var onEntryChange = _ref.onEntryChange;
     var onEntryEditCancel = _ref.onEntryEditCancel;
+    var onNewEntryClick = _ref.onNewEntryClick;
 
     console.log("=======> block");
     return _react2['default'].createElement(
-        'ul',
+        'div',
         null,
-        entries.map(function (entry) {
-            if (entry.edit == false) {
-                return _react2['default'].createElement(_entry2['default'], _extends({
-                    key: entry.id,
-                    onClick: function () {
-                        return onEntryClick(block, entry.id);
-                    }
-                }, entry));
-            } else {
-                return _react2['default'].createElement(_entryEditor2['default'], _extends({
-                    key: entry.id,
-                    onEntryChange: function (id, content) {
-                        return onEntryChange(block, id, content);
-                    },
-                    onEntryEditCancel: onEntryEditCancel
-                }, entry));
-            }
-        })
+        _react2['default'].createElement(
+            'ul',
+            null,
+            entries.map(function (entry) {
+                if (entry.edit == false) {
+                    return _react2['default'].createElement(_entry2['default'], _extends({
+                        key: entry.id,
+                        onClick: function () {
+                            return onEntryClick(block, entry.id);
+                        }
+                    }, entry));
+                } else {
+                    return _react2['default'].createElement(_entryEditor2['default'], _extends({
+                        key: entry.id,
+                        onEntryChange: function (id, content) {
+                            return onEntryChange(block, id, content);
+                        },
+                        onEntryEditCancel: onEntryEditCancel
+                    }, entry));
+                }
+            })
+        ),
+        _react2['default'].createElement(
+            'span',
+            { onClick: function () {
+                    return onNewEntryClick(block);
+                } },
+            '+'
+        )
     );
 };
 
@@ -37609,7 +37645,8 @@ Block.propTypes = {
     block: _react.PropTypes.string.isRequired,
     onEntryClick: _react.PropTypes.func.isRequired,
     onEntryChange: _react.PropTypes.func.isRequired,
-    onEntryEditCancel: _react.PropTypes.func.isRequired
+    onEntryEditCancel: _react.PropTypes.func.isRequired,
+    onNewEntryClick: _react.PropTypes.func.isRequired
 };
 
 exports['default'] = Block;
@@ -37637,6 +37674,7 @@ var BusinessCanvas = function BusinessCanvas(_ref) {
     var onEntryClick = _ref.onEntryClick;
     var onEntryChange = _ref.onEntryChange;
     var onEntryEditCancel = _ref.onEntryEditCancel;
+    var onNewEntryClick = _ref.onNewEntryClick;
 
     console.log("========> BusinessCanvas");
     return _react2['default'].createElement(
@@ -37647,21 +37685,24 @@ var BusinessCanvas = function BusinessCanvas(_ref) {
             entries: canvas.customers.entries,
             onEntryClick: onEntryClick,
             onEntryChange: onEntryChange,
-            onEntryEditCancel: onEntryEditCancel
+            onEntryEditCancel: onEntryEditCancel,
+            onNewEntryClick: onNewEntryClick
         }),
         _react2['default'].createElement(_block2['default'], { key: 'values',
             block: 'values',
             entries: canvas.values.entries,
             onEntryClick: onEntryClick,
             onEntryChange: onEntryChange,
-            onEntryEditCancel: onEntryEditCancel
+            onEntryEditCancel: onEntryEditCancel,
+            onNewEntryClick: onNewEntryClick
         }),
         _react2['default'].createElement(_block2['default'], { key: 'problems',
             block: 'problems',
             entries: canvas.problems.entries,
             onEntryClick: onEntryClick,
             onEntryChange: onEntryChange,
-            onEntryEditCancel: onEntryEditCancel
+            onEntryEditCancel: onEntryEditCancel,
+            onNewEntryClick: onNewEntryClick
         })
     );
 };
@@ -37695,7 +37736,8 @@ BusinessCanvas.propTypes = {
     }),
     onEntryClick: _react.PropTypes.func.isRequired,
     onEntryChange: _react.PropTypes.func.isRequired,
-    onEntryEditCancel: _react.PropTypes.func.isRequired
+    onEntryEditCancel: _react.PropTypes.func.isRequired,
+    onNewEntryClick: _react.PropTypes.func.isRequired
 };
 
 exports['default'] = BusinessCanvas;
@@ -37733,6 +37775,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
         },
         onEntryEditCancel: function onEntryEditCancel() {
             dispatch((0, _actions.cancelEditEntry)());
+        },
+        onNewEntryClick: function onNewEntryClick(block) {
+            dispatch((0, _actions.newEntry)(block));
         }
     };
 };
@@ -37840,6 +37885,94 @@ module.exports = exports["default"];
 },{"react":179}],198:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = require('react-redux');
+
+var _actions = require('../actions');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var NewEntryEditor = function NewEntryEditor(_ref) {
+    var newEntry = _ref.newEntry;
+    var onNewEntrySave = _ref.onNewEntrySave;
+    var onNewEntryCancel = _ref.onNewEntryCancel;
+
+    console.log("========> NewEntryEditor " + JSON.stringify(newEntry));
+
+    if (newEntry.visible) {
+        var _ret = (function () {
+            var input = undefined;
+
+            return {
+                v: _react2['default'].createElement(
+                    'div',
+                    { className: 'shadow' },
+                    _react2['default'].createElement(
+                        'div',
+                        { className: 'combo-container' },
+                        _react2['default'].createElement(
+                            'div',
+                            { className: 'combo' },
+                            _react2['default'].createElement('input', { ref: function (node) {
+                                    return input = node;
+                                }, type: 'text', defaultValue: '' }),
+                            _react2['default'].createElement(
+                                'button',
+                                { onClick: function () {
+                                        return onNewEntrySave(newEntry.block, input.value);
+                                    } },
+                                'Save'
+                            ),
+                            _react2['default'].createElement(
+                                'button',
+                                { onClick: onNewEntryCancel },
+                                'Cancel'
+                            )
+                        )
+                    )
+                )
+            };
+        })();
+
+        if (typeof _ret === 'object') return _ret.v;
+    }
+
+    return null;
+};
+
+function mapStateToProps(state) {
+    console.log("State: " + JSON.stringify(state.newEntry));
+    return { newEntry: state.newEntry };
+}
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        onNewEntrySave: function onNewEntrySave(block, content) {
+            dispatch((0, _actions.addEntry)(block, content));
+        },
+        onNewEntryCancel: function onNewEntryCancel() {
+            dispatch((0, _actions.cancelNewEntry)());
+        }
+    };
+};
+
+exports['default'] = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NewEntryEditor);
+module.exports = exports['default'];
+
+},{"../actions":191,"lodash":3,"react":179,"react-redux":7}],199:[function(require,module,exports){
+'use strict';
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 var _react = require('react');
@@ -37868,6 +38001,14 @@ var _componentApp = require('./component/app');
 
 var _componentApp2 = _interopRequireDefault(_componentApp);
 
+var _componentCanvasContainer = require('./component/canvas-container');
+
+var _componentCanvasContainer2 = _interopRequireDefault(_componentCanvasContainer);
+
+var _componentNewEntry = require('./component/new-entry');
+
+var _componentNewEntry2 = _interopRequireDefault(_componentNewEntry);
+
 (0, _fastclick2['default'])(document.body);
 
 var store = (0, _redux.createStore)(_reducers2['default']);
@@ -37875,10 +38016,15 @@ var store = (0, _redux.createStore)(_reducers2['default']);
 _reactDom2['default'].render(_react2['default'].createElement(
     _reactRedux.Provider,
     { store: store },
-    _react2['default'].createElement(_componentApp2['default'], null)
+    _react2['default'].createElement(
+        'div',
+        null,
+        _react2['default'].createElement(_componentCanvasContainer2['default'], null),
+        _react2['default'].createElement(_componentNewEntry2['default'], null)
+    )
 ), document.getElementById("app"));
 
-},{"./component/app":192,"./reducers":199,"fastclick":1,"react":179,"react-dom":4,"react-redux":7,"redux":185}],199:[function(require,module,exports){
+},{"./component/app":192,"./component/canvas-container":195,"./component/new-entry":198,"./reducers":200,"fastclick":1,"react":179,"react-dom":4,"react-redux":7,"redux":185}],200:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -37914,6 +38060,10 @@ var initialState = {
         problems: {
             entries: []
         }
+    },
+    newEntry: {
+        visible: false,
+        block: null
     }
 };
 
@@ -37923,7 +38073,13 @@ function canvasApp(state, action) {
     switch (action.type) {
         case _actions.ADD_ENTRY:
             var tmpState = _lodash2['default'].cloneDeep(state);
-            tmpState.canvas[action.block].push(action.content);
+            tmpState.canvas[action.block].entries.push({
+                id: new Date().getTime(),
+                content: action.content,
+                edit: false
+            });
+            tmpState.newEntry.visible = false;
+            tmpState.newEntry.block = null;
             return tmpState;
         case _actions.REMOVE_ENTRY:
             var tmpState = _lodash2['default'].cloneDeep(state);
@@ -37968,6 +38124,16 @@ function canvasApp(state, action) {
                 return entry;
             });
             return tmpState;
+        case _actions.NEW_ENTRY:
+            var tmpState = _lodash2['default'].cloneDeep(state);
+            tmpState.newEntry.visible = true;
+            tmpState.newEntry.block = action.block;
+            return tmpState;
+        case _actions.CANCEL_NEW_ENTRY:
+            var tmpState = _lodash2['default'].cloneDeep(state);
+            tmpState.newEntry.visible = false;
+            tmpState.newEntry.block = null;
+            return tmpState;
         default:
             return state;
     }
@@ -37976,4 +38142,4 @@ function canvasApp(state, action) {
 exports['default'] = canvasApp;
 module.exports = exports['default'];
 
-},{"./actions":191,"lodash":3,"redux":185}]},{},[198])
+},{"./actions":191,"lodash":3,"redux":185}]},{},[199])

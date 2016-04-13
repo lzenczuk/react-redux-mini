@@ -2,29 +2,34 @@ import React, { PropTypes } from 'react'
 import Entry from './entry'
 import EntryEditor from './entry-editor'
 
-const Block = ({ block, entries, onEntryClick, onEntryChange, onEntryEditCancel }) => {
+const Block = ({ block, entries, onEntryClick, onEntryChange, onEntryEditCancel, onNewEntryClick }) => {
     console.log("=======> block");
     return (
-    <ul>
-        {entries.map(entry => {
-                if (entry.edit==false) {
-                    return <Entry
-                        key={entry.id}
-                        onClick={() => onEntryClick(block, entry.id)}
-                        {...entry}
-                    />
-                } else {
-                    return <EntryEditor
-                        key={entry.id}
-                        onEntryChange={(id, content) => onEntryChange(block, id, content)}
-                        onEntryEditCancel={onEntryEditCancel}
-                        {...entry}
-                    />
-                }
-            }
-        )}
-    </ul>
-)};
+        <div>
+            <ul>
+                {entries.map(entry => {
+                        if (entry.edit == false) {
+                            return <Entry
+                                key={entry.id}
+                                onClick={() => onEntryClick(block, entry.id)}
+                                {...entry}
+                            />
+                        } else {
+                            return <EntryEditor
+                                key={entry.id}
+                                onEntryChange={(id, content) => onEntryChange(block, id, content)}
+                                onEntryEditCancel={onEntryEditCancel}
+                                {...entry}
+                            />
+                        }
+                    }
+                )}
+            </ul>
+            <span onClick ={ () => onNewEntryClick(block)}>+</span>
+        </div>
+
+    )
+};
 
 Block.propTypes = {
     entries: PropTypes.arrayOf(PropTypes.shape({
@@ -35,7 +40,8 @@ Block.propTypes = {
     block: PropTypes.string.isRequired,
     onEntryClick: PropTypes.func.isRequired,
     onEntryChange: PropTypes.func.isRequired,
-    onEntryEditCancel: PropTypes.func.isRequired
+    onEntryEditCancel: PropTypes.func.isRequired,
+    onNewEntryClick: PropTypes.func.isRequired
 };
 
 export default Block

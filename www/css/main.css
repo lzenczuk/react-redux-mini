@@ -1,0 +1,22 @@
+.shadow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(128, 128, 128, 0.5);
+}
+.combo-container {
+  width: 300px;
+  height: 100px;
+  overflow: auto;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.combo {
+  background-color: white;
+}

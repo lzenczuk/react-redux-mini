@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import _ from 'lodash';
-import {ADD_ENTRY, MOVE_ENTRY, REMOVE_ENTRY, EDIT_ENTRY, CANCEL_EDIT_ENTRY, CHANGE_ENTRY} from './actions';
+import {ADD_ENTRY, MOVE_ENTRY, REMOVE_ENTRY, EDIT_ENTRY, CANCEL_EDIT_ENTRY, CHANGE_ENTRY, NEW_ENTRY, CANCEL_NEW_ENTRY} from './actions';
 
 const initialState = {
     canvas: {
@@ -24,6 +24,10 @@ const initialState = {
         problems: {
             entries: []
         }
+    },
+    newEntry: {
+        visible: false,
+        block: null
     }
 };
 
@@ -32,7 +36,13 @@ function canvasApp(state = initialState, action) {
     switch (action.type) {
         case ADD_ENTRY:
             var tmpState = _.cloneDeep(state);
-            tmpState.canvas[action.block].push(action.content);
+            tmpState.canvas[action.block].entries.push({
+                id: new Date().getTime(),
+                content: action.content,
+                edit: false
+            });
+            tmpState.newEntry.visible = false;
+            tmpState.newEntry.block = null;
             return tmpState;
         case REMOVE_ENTRY:
             var tmpState = _.cloneDeep(state);
@@ -74,6 +84,16 @@ function canvasApp(state = initialState, action) {
 
                 return entry
             }));
+            return tmpState;
+        case NEW_ENTRY:
+            var tmpState = _.cloneDeep(state);
+            tmpState.newEntry.visible = true;
+            tmpState.newEntry.block = action.block;
+            return tmpState;
+        case CANCEL_NEW_ENTRY:
+            var tmpState = _.cloneDeep(state);
+            tmpState.newEntry.visible = false;
+            tmpState.newEntry.block = null;
             return tmpState;
         default:
             return state;
