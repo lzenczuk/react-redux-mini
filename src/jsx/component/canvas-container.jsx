@@ -1,5 +1,7 @@
+import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd';
 import { connect } from 'react-redux'
-import {editEntry, changeEntry, cancelEditEntry, newEntry} from '../actions';
+import {editEntry, changeEntry, cancelEditEntry, newEntry, dropEntryOnOtherEntry} from '../actions';
 
 import BusinessCanvas from './business-canvas';
 
@@ -21,6 +23,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         onNewEntryClick: (block) => {
             dispatch(newEntry(block))
+        },
+        onDrop: (dragId, dragContent,  dropId) => {
+            dispatch(dropEntryOnOtherEntry(dragId, dragContent, dropId))
         }
     }
 };
@@ -28,6 +33,6 @@ const mapDispatchToProps = (dispatch) => {
 const CanvasContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(BusinessCanvas)
+)(DragDropContext(HTML5Backend)(BusinessCanvas))
 
 export default CanvasContainer

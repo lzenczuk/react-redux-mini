@@ -2,16 +2,17 @@ import React, { PropTypes } from 'react'
 import Entry from './entry'
 import EntryEditor from './entry-editor'
 
-const Block = ({ block, entries, onEntryClick, onEntryChange, onEntryEditCancel, onNewEntryClick }) => {
+const Block = ({ block, entries, onEntryClick, onEntryChange, onEntryEditCancel, onNewEntryClick, onDrop }) => {
     console.log("=======> block");
     return (
-        <div>
+        <div className="block">
             <ul>
                 {entries.map(entry => {
                         if (entry.edit == false) {
                             return <Entry
                                 key={entry.id}
                                 onClick={() => onEntryClick(block, entry.id)}
+                                onDrop={onDrop}
                                 {...entry}
                             />
                         } else {
@@ -41,7 +42,8 @@ Block.propTypes = {
     onEntryClick: PropTypes.func.isRequired,
     onEntryChange: PropTypes.func.isRequired,
     onEntryEditCancel: PropTypes.func.isRequired,
-    onNewEntryClick: PropTypes.func.isRequired
+    onNewEntryClick: PropTypes.func.isRequired,
+    onDrop: PropTypes.func.isRequired
 };
 
 export default Block

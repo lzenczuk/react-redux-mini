@@ -6,6 +6,8 @@ export const MOVE_ENTRY = 'MOVE_ENTRY';
 export const EDIT_ENTRY = 'EDIT_ENTRY';
 export const CHANGE_ENTRY = 'CHANGE_ENTRY';
 export const CANCEL_EDIT_ENTRY = 'CANCEL_EDIT_ENTRY';
+export const DROP_ENTRY_ON_ENTRY = 'DROP_ENTRY_ON_ENTRY';
+export const DROP_ENTRY_ON_BLOCK = 'DROP_ENTRY_ON_BLOCK';
 
 export function addEntry(block, content){
     return {
@@ -67,6 +69,15 @@ export function moveEntry(srcBlock, id, desBlock){
         srcBlock: srcBlock,
         desBlock: desBlock,
         id: id
+    }
+}
+
+export function dropEntryOnOtherEntry(dragEntryId, dragEntryContent, dropEntryId){
+    return {
+        type: DROP_ENTRY_ON_ENTRY,
+        dragEntryId: dragEntryId,
+        dragEntryContent: dragEntryContent,
+        dropEntryId: dropEntryId
     }
 }
 

@@ -20,3 +20,34 @@
 .combo {
   background-color: white;
 }
+.block {
+  border: 1px solid darkgray;
+  margin-bottom: 5px;
+}
+.dragging {
+  color: grey;
+}
+@-webkit-keyframes dragOverPadding {
+  from {
+    padding-top: 0px;
+  }
+  to {
+    padding-top: 30px;
+  }
+}
+@keyframes dragOverPadding {
+  from {
+    padding-top: 0px;
+  }
+  to {
+    padding-top: 30px;
+  }
+}
+.dragOver {
+  -webkit-animation-name: dragOverPadding;
+          animation-name: dragOverPadding;
+  -webkit-animation-duration: 0.25s;
+          animation-duration: 0.25s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}

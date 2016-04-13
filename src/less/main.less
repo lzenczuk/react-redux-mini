@@ -27,8 +27,26 @@
   bottom: 0;
   right: 0;
 }
-
-
 .combo {
   background-color: white;
+}
+
+.block {
+  border: 1px solid darkgray;
+  margin-bottom: 5px;
+}
+
+.dragging {
+  color: grey;
+}
+
+@keyframes dragOverPadding {
+  from {padding-top: 0px;}
+  to {padding-top: 30px;}
+}
+
+.dragOver {
+  animation-name: dragOverPadding;
+  animation-duration: 0.25s;
+  animation-fill-mode: forwards;
 }

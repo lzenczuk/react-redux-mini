@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import _ from 'lodash';
-import {ADD_ENTRY, MOVE_ENTRY, REMOVE_ENTRY, EDIT_ENTRY, CANCEL_EDIT_ENTRY, CHANGE_ENTRY, NEW_ENTRY, CANCEL_NEW_ENTRY} from './actions';
+import {ADD_ENTRY, MOVE_ENTRY, REMOVE_ENTRY, EDIT_ENTRY, CANCEL_EDIT_ENTRY, CHANGE_ENTRY, NEW_ENTRY, CANCEL_NEW_ENTRY, DROP_ENTRY_ON_ENTRY} from './actions';
 
 const initialState = {
     canvas: {
@@ -95,6 +95,47 @@ function canvasApp(state = initialState, action) {
             tmpState.newEntry.visible = false;
             tmpState.newEntry.block = null;
             return tmpState;
+        case DROP_ENTRY_ON_ENTRY:
+            var tmpState = _.cloneDeep(state);
+
+            let dragEntryId =  action.dragEntryId;
+            let dragEntryContent =  action.dragEntryContent;
+            let dropEntryId = action.dropEntryId;
+
+            let dragBlock;
+            let dropBlock;
+
+            _.mapValues(tmpState.canvas, (block, key) => {
+                block.entries.forEach(entry => {
+                    if(entry.id==dragEntryId){
+                        dragBlock = key;
+                    }
+
+                    if(entry.id==dropEntryId){
+                        dropBlock = key;
+                    }
+                });
+            });
+
+            tmpState.canvas[dragBlock].entries = tmpState.canvas[dragBlock].entries.filter((content => content.id != dragEntryId))
+
+            let newEntries=[];
+            tmpState.canvas[dropBlock].entries.forEach(entry => {
+                if(entry.id==dropEntryId){
+                    newEntries.push({
+                        id: dragEntryId,
+                        content: dragEntryContent,
+                        edit: false
+                    })
+                }
+
+                newEntries.push(entry);
+            });
+
+            tmpState.canvas[dropBlock].entries=newEntries;
+
+            return tmpState;
+
         default:
             return state;
     }
