@@ -4,7 +4,6 @@ import {addEntry, cancelNewEntry} from '../actions'
 import _ from 'lodash'
 
 let NewEntryEditor = ({newEntry, onNewEntrySave, onNewEntryCancel}) => {
-    console.log("========> NewEntryEditor " + JSON.stringify(newEntry));
 
     if (newEntry.visible) {
         let input;
@@ -26,7 +25,6 @@ let NewEntryEditor = ({newEntry, onNewEntrySave, onNewEntryCancel}) => {
 };
 
 function mapStateToProps(state) {
-    console.log("State: " + JSON.stringify(state.newEntry))
     return {newEntry: state.newEntry}
 }
 

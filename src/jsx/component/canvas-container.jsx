@@ -1,12 +1,11 @@
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import { connect } from 'react-redux'
-import {editEntry, changeEntry, cancelEditEntry, newEntry, dropEntryOnOtherEntry} from '../actions';
+import {editEntry, changeEntry, cancelEditEntry, newEntry, dropEntryOnOtherEntry, dropEntryOnBlock} from '../actions';
 
 import BusinessCanvas from './business-canvas';
 
 const mapStateToProps = (state) => {
-    console.log("========> mapStateToProps");
     return Object.assign({}, state)
 };
 
@@ -26,6 +25,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         onDrop: (dragId, dragContent,  dropId) => {
             dispatch(dropEntryOnOtherEntry(dragId, dragContent, dropId))
+        },
+        onDropEntryToBlock: (dragId, dragContent, dropBlock) => {
+            dispatch(dropEntryOnBlock(dragId, dragContent, dropBlock))
         }
     }
 };

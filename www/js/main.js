@@ -53004,6 +53004,7 @@ exports.changeEntry = changeEntry;
 exports.removeEntry = removeEntry;
 exports.moveEntry = moveEntry;
 exports.dropEntryOnOtherEntry = dropEntryOnOtherEntry;
+exports.dropEntryOnBlock = dropEntryOnBlock;
 var NEW_ENTRY = 'NEW_ENTRY';
 exports.NEW_ENTRY = NEW_ENTRY;
 var CANCEL_NEW_ENTRY = 'CANCEL_NEW_ENTRY';
@@ -53098,6 +53099,15 @@ function dropEntryOnOtherEntry(dragEntryId, dragEntryContent, dropEntryId) {
     };
 }
 
+function dropEntryOnBlock(dragEntryId, dragEntryContent, dropBlock) {
+    return {
+        type: DROP_ENTRY_ON_BLOCK,
+        dragEntryId: dragEntryId,
+        dragEntryContent: dragEntryContent,
+        dropBlock: dropBlock
+    };
+}
+
 },{}],335:[function(require,module,exports){
 'use strict';
 
@@ -53146,6 +53156,8 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDnd = require('react-dnd');
+
 var _entry = require('./entry');
 
 var _entry2 = _interopRequireDefault(_entry);
@@ -53153,6 +53165,34 @@ var _entry2 = _interopRequireDefault(_entry);
 var _entryEditor = require('./entry-editor');
 
 var _entryEditor2 = _interopRequireDefault(_entryEditor);
+
+var target = {
+    drop: function drop(props, monitor, component) {
+
+        // Nested drop targets. Check is dropped already in child
+        var hasDroppedOnChild = monitor.didDrop();
+        if (hasDroppedOnChild) {
+            return;
+        }
+
+        // >###1 monitor item: description from beginDrag
+
+        var dragEntryId = monitor.getItem().id;
+        var dragEntryContent = monitor.getItem().content;
+        var dropBlock = props.block;
+
+        // call on drop method that will dispatch event
+        props.onDropEntryToBlock(dragEntryId, dragEntryContent, dropBlock);
+    }
+};
+
+function collectDrop(connect, monitor) {
+    return {
+        connectDropTarget: connect.dropTarget(),
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop()
+    };
+}
 
 var Block = function Block(_ref) {
     var block = _ref.block;
@@ -53162,9 +53202,9 @@ var Block = function Block(_ref) {
     var onEntryEditCancel = _ref.onEntryEditCancel;
     var onNewEntryClick = _ref.onNewEntryClick;
     var onDrop = _ref.onDrop;
+    var connectDropTarget = _ref.connectDropTarget;
 
-    console.log("=======> block");
-    return _react2['default'].createElement(
+    return connectDropTarget(_react2['default'].createElement(
         'div',
         { className: 'block' },
         _react2['default'].createElement(
@@ -53197,7 +53237,7 @@ var Block = function Block(_ref) {
                 } },
             '+'
         )
-    );
+    ));
 };
 
 Block.propTypes = {
@@ -53211,13 +53251,14 @@ Block.propTypes = {
     onEntryChange: _react.PropTypes.func.isRequired,
     onEntryEditCancel: _react.PropTypes.func.isRequired,
     onNewEntryClick: _react.PropTypes.func.isRequired,
-    onDrop: _react.PropTypes.func.isRequired
+    onDrop: _react.PropTypes.func.isRequired,
+    onDropEntryToBlock: _react.PropTypes.func.isRequired
 };
 
-exports['default'] = Block;
+exports['default'] = (0, _reactDnd.DropTarget)("ENTRY_DND_TYPE", target, collectDrop)(Block);
 module.exports = exports['default'];
 
-},{"./entry":340,"./entry-editor":339,"react":322}],337:[function(require,module,exports){
+},{"./entry":340,"./entry-editor":339,"react":322,"react-dnd":113}],337:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -53241,8 +53282,8 @@ var BusinessCanvas = function BusinessCanvas(_ref) {
     var onEntryEditCancel = _ref.onEntryEditCancel;
     var onNewEntryClick = _ref.onNewEntryClick;
     var onDrop = _ref.onDrop;
+    var onDropEntryToBlock = _ref.onDropEntryToBlock;
 
-    console.log("========> BusinessCanvas");
     return _react2['default'].createElement(
         'div',
         null,
@@ -53253,7 +53294,8 @@ var BusinessCanvas = function BusinessCanvas(_ref) {
             onEntryChange: onEntryChange,
             onEntryEditCancel: onEntryEditCancel,
             onNewEntryClick: onNewEntryClick,
-            onDrop: onDrop
+            onDrop: onDrop,
+            onDropEntryToBlock: onDropEntryToBlock
         }),
         _react2['default'].createElement(_block2['default'], { key: 'values',
             block: 'values',
@@ -53262,7 +53304,8 @@ var BusinessCanvas = function BusinessCanvas(_ref) {
             onEntryChange: onEntryChange,
             onEntryEditCancel: onEntryEditCancel,
             onNewEntryClick: onNewEntryClick,
-            onDrop: onDrop
+            onDrop: onDrop,
+            onDropEntryToBlock: onDropEntryToBlock
         }),
         _react2['default'].createElement(_block2['default'], { key: 'problems',
             block: 'problems',
@@ -53271,7 +53314,8 @@ var BusinessCanvas = function BusinessCanvas(_ref) {
             onEntryChange: onEntryChange,
             onEntryEditCancel: onEntryEditCancel,
             onNewEntryClick: onNewEntryClick,
-            onDrop: onDrop
+            onDrop: onDrop,
+            onDropEntryToBlock: onDropEntryToBlock
         })
     );
 };
@@ -53307,7 +53351,8 @@ BusinessCanvas.propTypes = {
     onEntryChange: _react.PropTypes.func.isRequired,
     onEntryEditCancel: _react.PropTypes.func.isRequired,
     onNewEntryClick: _react.PropTypes.func.isRequired,
-    onDrop: _react.PropTypes.func.isRequired
+    onDrop: _react.PropTypes.func.isRequired,
+    onDropEntryToBlock: _react.PropTypes.func.isRequired
 };
 
 exports['default'] = BusinessCanvas;
@@ -53337,7 +53382,6 @@ var _businessCanvas = require('./business-canvas');
 var _businessCanvas2 = _interopRequireDefault(_businessCanvas);
 
 var mapStateToProps = function mapStateToProps(state) {
-    console.log("========> mapStateToProps");
     return Object.assign({}, state);
 };
 
@@ -53357,6 +53401,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
         },
         onDrop: function onDrop(dragId, dragContent, dropId) {
             dispatch((0, _actions.dropEntryOnOtherEntry)(dragId, dragContent, dropId));
+        },
+        onDropEntryToBlock: function onDropEntryToBlock(dragId, dragContent, dropBlock) {
+            dispatch((0, _actions.dropEntryOnBlock)(dragId, dragContent, dropBlock));
         }
     };
 };
@@ -53388,8 +53435,6 @@ var EntryEditor = function EntryEditor(_ref) {
     var content = _ref.content;
     var onEntryEditCancel = _ref.onEntryEditCancel;
     var onEntryChange = _ref.onEntryChange;
-
-    console.log("========> EntryEditor");
 
     var input = undefined;
 
@@ -53458,12 +53503,9 @@ var target = {
     drop: function drop(props, monitor, component) {
 
         // >###1 monitor item: description from beginDrag
-
         var dragEntryId = monitor.getItem().id;
         var dragEntryContent = monitor.getItem().content;
         var dropEntryId = component.props.id;
-
-        console.log("drop: " + dragEntryId + "; " + dragEntryContent + "; " + dropEntryId);
 
         // call on drop method that will dispatch event
         props.onDrop(dragEntryId, dragEntryContent, dropEntryId);
@@ -53496,8 +53538,6 @@ var Entry = function Entry(_ref) {
     var connectDropTarget = _ref.connectDropTarget;
     var isDragging = _ref.isDragging;
     var isOver = _ref.isOver;
-
-    console.log("========> Entry");
 
     var cn = undefined;
 
@@ -53555,8 +53595,6 @@ var NewEntryEditor = function NewEntryEditor(_ref) {
     var onNewEntrySave = _ref.onNewEntrySave;
     var onNewEntryCancel = _ref.onNewEntryCancel;
 
-    console.log("========> NewEntryEditor " + JSON.stringify(newEntry));
-
     if (newEntry.visible) {
         var _ret = (function () {
             var input = undefined;
@@ -53599,7 +53637,6 @@ var NewEntryEditor = function NewEntryEditor(_ref) {
 };
 
 function mapStateToProps(state) {
-    console.log("State: " + JSON.stringify(state.newEntry));
     return { newEntry: state.newEntry };
 }
 
@@ -53782,14 +53819,15 @@ function canvasApp(state, action) {
             tmpState.newEntry.block = null;
             return tmpState;
         case _actions.DROP_ENTRY_ON_ENTRY:
+
             var tmpState = _lodash2['default'].cloneDeep(state);
 
             var dragEntryId = action.dragEntryId;
             var dragEntryContent = action.dragEntryContent;
             var dropEntryId = action.dropEntryId;
 
-            var dragBlock = undefined;
-            var dropBlock = undefined;
+            var dragBlock;
+            var dropBlock;
 
             _lodash2['default'].mapValues(tmpState.canvas, function (block, key) {
                 block.entries.forEach(function (entry) {
@@ -53823,7 +53861,35 @@ function canvasApp(state, action) {
             tmpState.canvas[dropBlock].entries = newEntries;
 
             return tmpState;
+        case _actions.DROP_ENTRY_ON_BLOCK:
 
+            var tmpState = _lodash2['default'].cloneDeep(state);
+
+            var dragEntryId = action.dragEntryId;
+            var dragEntryContent = action.dragEntryContent;
+            var dropBlock = action.dropBlock;
+
+            var dragBlock;
+
+            _lodash2['default'].mapValues(tmpState.canvas, function (block, key) {
+                block.entries.forEach(function (entry) {
+                    if (entry.id == dragEntryId) {
+                        dragBlock = key;
+                    }
+                });
+            });
+
+            tmpState.canvas[dragBlock].entries = tmpState.canvas[dragBlock].entries.filter(function (content) {
+                return content.id != dragEntryId;
+            });
+
+            tmpState.canvas[dropBlock].entries.push({
+                id: dragEntryId,
+                content: dragEntryContent,
+                edit: false
+            });
+
+            return tmpState;
         default:
             return state;
     }

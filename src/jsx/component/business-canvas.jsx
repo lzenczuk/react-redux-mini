@@ -2,8 +2,7 @@ import React, { PropTypes } from 'react';
 
 import Block from './block';
 
-const BusinessCanvas = ({canvas, onEntryClick, onEntryChange, onEntryEditCancel, onNewEntryClick, onDrop}) => {
-    console.log("========> BusinessCanvas");
+const BusinessCanvas = ({canvas, onEntryClick, onEntryChange, onEntryEditCancel, onNewEntryClick, onDrop, onDropEntryToBlock}) => {
     return (
         <div>
             <Block key='customers'
@@ -14,6 +13,7 @@ const BusinessCanvas = ({canvas, onEntryClick, onEntryChange, onEntryEditCancel,
                    onEntryEditCancel={onEntryEditCancel}
                    onNewEntryClick={onNewEntryClick}
                    onDrop={onDrop}
+                   onDropEntryToBlock={onDropEntryToBlock}
             />
             <Block key='values'
                    block='values'
@@ -23,6 +23,7 @@ const BusinessCanvas = ({canvas, onEntryClick, onEntryChange, onEntryEditCancel,
                    onEntryEditCancel={onEntryEditCancel}
                    onNewEntryClick={onNewEntryClick}
                    onDrop={onDrop}
+                   onDropEntryToBlock={onDropEntryToBlock}
             />
             <Block key='problems'
                    block='problems'
@@ -32,6 +33,7 @@ const BusinessCanvas = ({canvas, onEntryClick, onEntryChange, onEntryEditCancel,
                    onEntryEditCancel={onEntryEditCancel}
                    onNewEntryClick={onNewEntryClick}
                    onDrop={onDrop}
+                   onDropEntryToBlock={onDropEntryToBlock}
             />
         </div>
     );
@@ -68,7 +70,8 @@ BusinessCanvas.propTypes = {
     onEntryChange: PropTypes.func.isRequired,
     onEntryEditCancel: PropTypes.func.isRequired,
     onNewEntryClick: PropTypes.func.isRequired,
-    onDrop: PropTypes.func.isRequired
+    onDrop: PropTypes.func.isRequired,
+    onDropEntryToBlock: PropTypes.func.isRequired
 };
 
 export default BusinessCanvas;

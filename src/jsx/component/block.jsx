@@ -1,10 +1,38 @@
 import React, { PropTypes } from 'react'
+import { DropTarget } from 'react-dnd';
 import Entry from './entry'
 import EntryEditor from './entry-editor'
 
-const Block = ({ block, entries, onEntryClick, onEntryChange, onEntryEditCancel, onNewEntryClick, onDrop }) => {
-    console.log("=======> block");
-    return (
+const target = {
+    drop(props, monitor, component) {
+
+        // Nested drop targets. Check is dropped already in child
+        const hasDroppedOnChild = monitor.didDrop();
+        if (hasDroppedOnChild) {
+            return;
+        }
+
+        // >###1 monitor item: description from beginDrag
+
+        let dragEntryId =  monitor.getItem().id;
+        let dragEntryContent =  monitor.getItem().content;
+        let dropBlock = props.block;
+
+        // call on drop method that will dispatch event
+        props.onDropEntryToBlock(dragEntryId, dragEntryContent, dropBlock)
+    }
+};
+
+function collectDrop(connect, monitor) {
+    return {
+        connectDropTarget: connect.dropTarget(),
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop()
+    }
+}
+
+const Block = ({ block, entries, onEntryClick, onEntryChange, onEntryEditCancel, onNewEntryClick, onDrop, connectDropTarget }) => {
+    return connectDropTarget(
         <div className="block">
             <ul>
                 {entries.map(entry => {
@@ -43,7 +71,8 @@ Block.propTypes = {
     onEntryChange: PropTypes.func.isRequired,
     onEntryEditCancel: PropTypes.func.isRequired,
     onNewEntryClick: PropTypes.func.isRequired,
-    onDrop: PropTypes.func.isRequired
+    onDrop: PropTypes.func.isRequired,
+    onDropEntryToBlock: PropTypes.func.isRequired
 };
 
-export default Block
+export default DropTarget("ENTRY_DND_TYPE", target, collectDrop)(Block)

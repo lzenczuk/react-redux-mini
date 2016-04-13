@@ -18,12 +18,9 @@ const target = {
     drop(props, monitor, component) {
 
         // >###1 monitor item: description from beginDrag
-
         let dragEntryId =  monitor.getItem().id;
         let dragEntryContent =  monitor.getItem().content;
         let dropEntryId = component.props.id;
-
-        console.log("drop: "+dragEntryId+"; "+dragEntryContent+"; "+dropEntryId);
 
         // call on drop method that will dispatch event
         props.onDrop(dragEntryId, dragEntryContent, dropEntryId)
@@ -50,8 +47,6 @@ function collectDrop(connect, monitor) {
 
 
 const Entry = ({ onClick, id, content, connectDragSource, connectDropTarget, isDragging, isOver }) => {
-    console.log("========> Entry");
-
     let cn;
 
     if(isDragging){

@@ -81,5 +81,13 @@ export function dropEntryOnOtherEntry(dragEntryId, dragEntryContent, dropEntryId
     }
 }
 
+export function dropEntryOnBlock(dragEntryId, dragEntryContent, dropBlock){
+    return {
+        type: DROP_ENTRY_ON_BLOCK,
+        dragEntryId: dragEntryId,
+        dragEntryContent: dragEntryContent,
+        dropBlock: dropBlock
+    }
+}
 
 

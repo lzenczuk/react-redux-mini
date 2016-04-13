@@ -2,8 +2,6 @@ import React, { PropTypes } from 'react'
 import _ from 'lodash'
 
 const EntryEditor = ({ id, content, onEntryEditCancel, onEntryChange }) => {
-    console.log("========> EntryEditor");
-
     let input;
 
     return (
