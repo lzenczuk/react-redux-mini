@@ -10,7 +10,7 @@ import canvasApp from './reducers';
 
 import App from './component/app';
 
-import CanvasContainer from './component/canvas-container';
+import BusinessCanvas from './component/business-canvas';
 import NewEntryEditor from './component/new-entry';
 
 attachFastClick(document.body);
@@ -20,7 +20,7 @@ let store = createStore(canvasApp);
 ReactDOM.render(
     <Provider store={store}>
         <div>
-            <CanvasContainer />
+            <BusinessCanvas />
             <NewEntryEditor />
         </div>
     </Provider>,

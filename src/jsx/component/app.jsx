@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CanvasContainer from './canvas-container';
+import CanvasContainer from './business-canvas-container';
 import NewEntryEditor from './new-entry';
 const App = () => (
     <div>

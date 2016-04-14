@@ -62,7 +62,7 @@ const Block = ({ block, entries, onEntryClick, onEntryChange, onEntryEditCancel,
 
 Block.propTypes = {
     entries: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string.isRequired,
+        id: PropTypes.number.isRequired,
         content: PropTypes.string.isRequired,
         edit: PropTypes.bool.isRequired
     }).isRequired).isRequired,

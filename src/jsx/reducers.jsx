@@ -16,12 +16,12 @@ const initialState = {
         values: {
             entries: [
                 {
-                    id: "lkj",
+                    id: 1,
                     content: "value 1",
                     edit: false
                 },
                 {
-                    id: "mnvb",
+                    id: 2,
                     content: "value 2",
                     edit: false
                 }

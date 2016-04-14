@@ -53121,9 +53121,9 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _canvasContainer = require('./canvas-container');
+var _businessCanvasContainer = require('./business-canvas-container');
 
-var _canvasContainer2 = _interopRequireDefault(_canvasContainer);
+var _businessCanvasContainer2 = _interopRequireDefault(_businessCanvasContainer);
 
 var _newEntry = require('./new-entry');
 
@@ -53133,7 +53133,7 @@ var App = function App() {
     return _react2['default'].createElement(
         'div',
         null,
-        _react2['default'].createElement(_canvasContainer2['default'], null),
+        _react2['default'].createElement(_businessCanvasContainer2['default'], null),
         _react2['default'].createElement(_newEntry2['default'], null)
     );
 };
@@ -53141,7 +53141,61 @@ var App = function App() {
 exports['default'] = App;
 module.exports = exports['default'];
 
-},{"./canvas-container":338,"./new-entry":341,"react":322}],336:[function(require,module,exports){
+},{"./business-canvas-container":338,"./new-entry":342,"react":322}],336:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _reactRedux = require('react-redux');
+
+var _actions = require('../actions');
+
+var _block = require("./block");
+
+var _block2 = _interopRequireDefault(_block);
+
+var mapStateToProps = function mapStateToProps(state, _ref) {
+    var block = _ref.block;
+
+    return {
+        entries: state.canvas[block].entries,
+        block: block
+    };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        onEntryClick: function onEntryClick(block, id) {
+            dispatch((0, _actions.editEntry)(block, id));
+        },
+        onEntryChange: function onEntryChange(block, id, content) {
+            dispatch((0, _actions.changeEntry)(block, id, content));
+        },
+        onEntryEditCancel: function onEntryEditCancel() {
+            dispatch((0, _actions.cancelEditEntry)());
+        },
+        onNewEntryClick: function onNewEntryClick(block) {
+            dispatch((0, _actions.newEntry)(block));
+        },
+        onDrop: function onDrop(dragId, dragContent, dropId) {
+            dispatch((0, _actions.dropEntryOnOtherEntry)(dragId, dragContent, dropId));
+        },
+        onDropEntryToBlock: function onDropEntryToBlock(dragId, dragContent, dropBlock) {
+            dispatch((0, _actions.dropEntryOnBlock)(dragId, dragContent, dropBlock));
+        }
+    };
+};
+
+var BlockContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_block2['default']);
+
+exports['default'] = BlockContainer;
+module.exports = exports['default'];
+
+},{"../actions":334,"./block":337,"react-redux":150}],337:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -53242,7 +53296,7 @@ var Block = function Block(_ref) {
 
 Block.propTypes = {
     entries: _react.PropTypes.arrayOf(_react.PropTypes.shape({
-        id: _react.PropTypes.string.isRequired,
+        id: _react.PropTypes.number.isRequired,
         content: _react.PropTypes.string.isRequired,
         edit: _react.PropTypes.bool.isRequired
     }).isRequired).isRequired,
@@ -53258,107 +53312,7 @@ Block.propTypes = {
 exports['default'] = (0, _reactDnd.DropTarget)("ENTRY_DND_TYPE", target, collectDrop)(Block);
 module.exports = exports['default'];
 
-},{"./entry":340,"./entry-editor":339,"react":322,"react-dnd":113}],337:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _block = require('./block');
-
-var _block2 = _interopRequireDefault(_block);
-
-var BusinessCanvas = function BusinessCanvas(_ref) {
-    var canvas = _ref.canvas;
-    var onEntryClick = _ref.onEntryClick;
-    var onEntryChange = _ref.onEntryChange;
-    var onEntryEditCancel = _ref.onEntryEditCancel;
-    var onNewEntryClick = _ref.onNewEntryClick;
-    var onDrop = _ref.onDrop;
-    var onDropEntryToBlock = _ref.onDropEntryToBlock;
-
-    return _react2['default'].createElement(
-        'div',
-        null,
-        _react2['default'].createElement(_block2['default'], { key: 'customers',
-            block: 'customers',
-            entries: canvas.customers.entries,
-            onEntryClick: onEntryClick,
-            onEntryChange: onEntryChange,
-            onEntryEditCancel: onEntryEditCancel,
-            onNewEntryClick: onNewEntryClick,
-            onDrop: onDrop,
-            onDropEntryToBlock: onDropEntryToBlock
-        }),
-        _react2['default'].createElement(_block2['default'], { key: 'values',
-            block: 'values',
-            entries: canvas.values.entries,
-            onEntryClick: onEntryClick,
-            onEntryChange: onEntryChange,
-            onEntryEditCancel: onEntryEditCancel,
-            onNewEntryClick: onNewEntryClick,
-            onDrop: onDrop,
-            onDropEntryToBlock: onDropEntryToBlock
-        }),
-        _react2['default'].createElement(_block2['default'], { key: 'problems',
-            block: 'problems',
-            entries: canvas.problems.entries,
-            onEntryClick: onEntryClick,
-            onEntryChange: onEntryChange,
-            onEntryEditCancel: onEntryEditCancel,
-            onNewEntryClick: onNewEntryClick,
-            onDrop: onDrop,
-            onDropEntryToBlock: onDropEntryToBlock
-        })
-    );
-};
-
-BusinessCanvas.propTypes = {
-    canvas: _react.PropTypes.shape({
-        values: _react.PropTypes.shape(_react.PropTypes.shape({
-            entries: _react.PropTypes.arrayOf(_react.PropTypes.shape({
-                id: _react.PropTypes.string.isRequired,
-                content: _react.PropTypes.string.isRequired,
-                edit: _react.PropTypes.bool.isRequired
-            }).isRequired).isRequired,
-            block: _react.PropTypes.string.isRequired
-        })),
-        customers: _react.PropTypes.shape(_react.PropTypes.shape({
-            entries: _react.PropTypes.arrayOf(_react.PropTypes.shape({
-                id: _react.PropTypes.string.isRequired,
-                content: _react.PropTypes.string.isRequired,
-                edit: _react.PropTypes.bool.isRequired
-            }).isRequired).isRequired,
-            block: _react.PropTypes.string.isRequired
-        })),
-        problems: _react.PropTypes.shape(_react.PropTypes.shape({
-            entries: _react.PropTypes.arrayOf(_react.PropTypes.shape({
-                id: _react.PropTypes.string.isRequired,
-                content: _react.PropTypes.string.isRequired,
-                edit: _react.PropTypes.bool.isRequired
-            }).isRequired).isRequired,
-            block: _react.PropTypes.string.isRequired
-        }))
-    }),
-    onEntryClick: _react.PropTypes.func.isRequired,
-    onEntryChange: _react.PropTypes.func.isRequired,
-    onEntryEditCancel: _react.PropTypes.func.isRequired,
-    onNewEntryClick: _react.PropTypes.func.isRequired,
-    onDrop: _react.PropTypes.func.isRequired,
-    onDropEntryToBlock: _react.PropTypes.func.isRequired
-};
-
-exports['default'] = BusinessCanvas;
-module.exports = exports['default'];
-
-},{"./block":336,"react":322}],338:[function(require,module,exports){
+},{"./entry":341,"./entry-editor":340,"react":322,"react-dnd":113}],338:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -53386,34 +53340,58 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-    return {
-        onEntryClick: function onEntryClick(block, id) {
-            dispatch((0, _actions.editEntry)(block, id));
-        },
-        onEntryChange: function onEntryChange(block, id, content) {
-            dispatch((0, _actions.changeEntry)(block, id, content));
-        },
-        onEntryEditCancel: function onEntryEditCancel() {
-            dispatch((0, _actions.cancelEditEntry)());
-        },
-        onNewEntryClick: function onNewEntryClick(block) {
-            dispatch((0, _actions.newEntry)(block));
-        },
-        onDrop: function onDrop(dragId, dragContent, dropId) {
-            dispatch((0, _actions.dropEntryOnOtherEntry)(dragId, dragContent, dropId));
-        },
-        onDropEntryToBlock: function onDropEntryToBlock(dragId, dragContent, dropBlock) {
-            dispatch((0, _actions.dropEntryOnBlock)(dragId, dragContent, dropBlock));
-        }
-    };
+    return {};
 };
 
-var CanvasContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _reactDnd.DragDropContext)(_reactDndHtml5Backend2['default'])(_businessCanvas2['default']));
+var BusinessCanvasContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)((0, _reactDnd.DragDropContext)(_reactDndHtml5Backend2['default'])(_businessCanvas2['default']));
 
-exports['default'] = CanvasContainer;
+exports['default'] = BusinessCanvasContainer;
 module.exports = exports['default'];
 
-},{"../actions":334,"./business-canvas":337,"react-dnd":113,"react-dnd-html5-backend":99,"react-redux":150}],339:[function(require,module,exports){
+},{"../actions":334,"./business-canvas":339,"react-dnd":113,"react-dnd-html5-backend":99,"react-redux":150}],339:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDndHtml5Backend = require('react-dnd-html5-backend');
+
+var _reactDndHtml5Backend2 = _interopRequireDefault(_reactDndHtml5Backend);
+
+var _reactDnd = require('react-dnd');
+
+var _blockContainer = require('./block-container');
+
+var _blockContainer2 = _interopRequireDefault(_blockContainer);
+
+var BusinessCanvas = function BusinessCanvas() {
+    return _react2['default'].createElement(
+        'div',
+        null,
+        _react2['default'].createElement(_blockContainer2['default'], { key: 'customers',
+            block: 'customers'
+        }),
+        _react2['default'].createElement(_blockContainer2['default'], { key: 'values',
+            block: 'values'
+        }),
+        _react2['default'].createElement(_blockContainer2['default'], { key: 'problems',
+            block: 'problems'
+
+        })
+    );
+};
+
+exports['default'] = (0, _reactDnd.DragDropContext)(_reactDndHtml5Backend2['default'])(BusinessCanvas);
+module.exports = exports['default'];
+
+},{"./block-container":336,"react":322,"react-dnd":113,"react-dnd-html5-backend":99}],340:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -53460,7 +53438,7 @@ var EntryEditor = function EntryEditor(_ref) {
 };
 
 EntryEditor.propTypes = {
-    id: _react.PropTypes.string.isRequired,
+    id: _react.PropTypes.number.isRequired,
     content: _react.PropTypes.string.isRequired,
     onEntryChange: _react.PropTypes.func.isRequired,
     onEntryEditCancel: _react.PropTypes.func.isRequired,
@@ -53470,7 +53448,7 @@ EntryEditor.propTypes = {
 exports['default'] = EntryEditor;
 module.exports = exports['default'];
 
-},{"lodash":81,"react":322}],340:[function(require,module,exports){
+},{"lodash":81,"react":322}],341:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -53559,7 +53537,7 @@ var Entry = function Entry(_ref) {
 };
 
 Entry.propTypes = {
-    id: _react.PropTypes.string.isRequired,
+    id: _react.PropTypes.number.isRequired,
     content: _react.PropTypes.string.isRequired,
     onClick: _react.PropTypes.func.isRequired,
     onDrop: _react.PropTypes.func.isRequired,
@@ -53569,7 +53547,7 @@ Entry.propTypes = {
 exports['default'] = (0, _ramda.pipe)((0, _reactDnd.DragSource)("ENTRY_DND_TYPE", source, collectDrag), (0, _reactDnd.DropTarget)("ENTRY_DND_TYPE", target, collectDrop))(Entry);
 module.exports = exports['default'];
 
-},{"ramda":90,"react":322,"react-dnd":113}],341:[function(require,module,exports){
+},{"ramda":90,"react":322,"react-dnd":113}],342:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -53654,7 +53632,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 exports['default'] = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(NewEntryEditor);
 module.exports = exports['default'];
 
-},{"../actions":334,"lodash":81,"react":322,"react-redux":150}],342:[function(require,module,exports){
+},{"../actions":334,"lodash":81,"react":322,"react-redux":150}],343:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -53685,9 +53663,9 @@ var _componentApp = require('./component/app');
 
 var _componentApp2 = _interopRequireDefault(_componentApp);
 
-var _componentCanvasContainer = require('./component/canvas-container');
+var _componentBusinessCanvas = require('./component/business-canvas');
 
-var _componentCanvasContainer2 = _interopRequireDefault(_componentCanvasContainer);
+var _componentBusinessCanvas2 = _interopRequireDefault(_componentBusinessCanvas);
 
 var _componentNewEntry = require('./component/new-entry');
 
@@ -53703,12 +53681,12 @@ _reactDom2['default'].render(_react2['default'].createElement(
     _react2['default'].createElement(
         'div',
         null,
-        _react2['default'].createElement(_componentCanvasContainer2['default'], null),
+        _react2['default'].createElement(_componentBusinessCanvas2['default'], null),
         _react2['default'].createElement(_componentNewEntry2['default'], null)
     )
 ), document.getElementById("app"));
 
-},{"./component/app":335,"./component/canvas-container":338,"./component/new-entry":341,"./reducers":343,"fastclick":1,"react":322,"react-dom":147,"react-redux":150,"redux":328}],343:[function(require,module,exports){
+},{"./component/app":335,"./component/business-canvas":339,"./component/new-entry":342,"./reducers":344,"fastclick":1,"react":322,"react-dom":147,"react-redux":150,"redux":328}],344:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -53729,11 +53707,11 @@ var initialState = {
     canvas: {
         values: {
             entries: [{
-                id: "lkj",
+                id: 1,
                 content: "value 1",
                 edit: false
             }, {
-                id: "mnvb",
+                id: 2,
                 content: "value 2",
                 edit: false
             }]
@@ -53898,4 +53876,4 @@ function canvasApp(state, action) {
 exports['default'] = canvasApp;
 module.exports = exports['default'];
 
-},{"./actions":334,"lodash":81,"redux":328}]},{},[342])
+},{"./actions":334,"lodash":81,"redux":328}]},{},[343])

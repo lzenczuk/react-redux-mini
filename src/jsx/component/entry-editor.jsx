@@ -14,7 +14,7 @@ const EntryEditor = ({ id, content, onEntryEditCancel, onEntryChange }) => {
 };
 
 EntryEditor.propTypes = {
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     content: PropTypes.string.isRequired,
     onEntryChange: PropTypes.func.isRequired,
     onEntryEditCancel: PropTypes.func.isRequired,

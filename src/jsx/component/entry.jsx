@@ -67,7 +67,7 @@ const Entry = ({ onClick, id, content, connectDragSource, connectDropTarget, isD
 };
 
 Entry.propTypes = {
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     content: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
     onDrop: PropTypes.func.isRequired,
