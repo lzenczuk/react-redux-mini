@@ -2,17 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c1834f3-d645-4ebf-a5af-0abfc1c23466" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/jsx/component/block-container.jsx" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/jsx/component/canvas-container.jsx" afterPath="$PROJECT_DIR$/src/jsx/component/business-canvas-container.jsx" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/www/css/main.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/www/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/www/js/main.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/jsx/component/app.jsx" afterPath="$PROJECT_DIR$/src/jsx/component/app.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/jsx/component/block.jsx" afterPath="$PROJECT_DIR$/src/jsx/component/block.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/jsx/component/business-canvas.jsx" afterPath="$PROJECT_DIR$/src/jsx/component/business-canvas.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/jsx/component/entry-editor.jsx" afterPath="$PROJECT_DIR$/src/jsx/component/entry-editor.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/jsx/component/entry.jsx" afterPath="$PROJECT_DIR$/src/jsx/component/entry.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/jsx/main.jsx" afterPath="$PROJECT_DIR$/src/jsx/main.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/jsx/reducers.jsx" afterPath="$PROJECT_DIR$/src/jsx/reducers.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/js/main.js" afterPath="$PROJECT_DIR$/www/js/main.js" />
     </list>
     <ignored path="quickbmc.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -250,68 +243,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="less" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="quickbmc" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="quickbmc" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jsx" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="quickbmc" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="quickbmc" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jsx" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="component" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="quickbmc" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="quickbmc" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="html" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1009,7 +940,7 @@
       <option name="number" value="Default" />
       <updated>1460382782738</updated>
       <workItem from="1460382787011" duration="34977000" />
-      <workItem from="1460543771624" duration="20408000" />
+      <workItem from="1460543771624" duration="20653000" />
     </task>
     <task id="LOCAL-00001" summary="Basic working version&#10;">
       <created>1460470736652</created>
@@ -1029,11 +960,17 @@
       <option name="project" value="LOCAL" />
       <updated>1460560986674</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Extract block container to move responsibility up.">
+      <created>1460626675744</created>
+      <option name="number" value="00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1460626675744</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="55385000" />
+    <option name="totallyTimeSpent" value="55630000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1985" y="-4" width="1855" height="1084" extended-state="6" />
@@ -1080,7 +1017,8 @@
     <MESSAGE value="Basic working version&#10;" />
     <MESSAGE value="Add new entry" />
     <MESSAGE value="Add entry to entry dnd." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add entry to entry dnd." />
+    <MESSAGE value="Extract block container to move responsibility up." />
+    <option name="LAST_COMMIT_MESSAGE" value="Extract block container to move responsibility up." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
