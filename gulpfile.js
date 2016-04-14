@@ -15,9 +15,9 @@ var autoprefixer = require('autoprefixer-core');
 var path = {
     app_jsx:  './src/jsx/main.jsx',
     app_less: './src/less/main.less',
-    dest:     './www/',
-    dest_js:  './www/js/',
-    dest_css: './www/css/'
+    dest:     './out/',
+    dest_js:  './out/js/',
+    dest_css: './out/css/'
 };
 
 gulp.task('clean', function(done){
