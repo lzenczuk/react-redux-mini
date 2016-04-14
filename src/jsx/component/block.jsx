@@ -15,11 +15,10 @@ const target = {
         // >###1 monitor item: description from beginDrag
 
         let dragEntryId =  monitor.getItem().id;
-        let dragEntryContent =  monitor.getItem().content;
         let dropBlock = props.block;
 
         // call on drop method that will dispatch event
-        props.onDropEntryToBlock(dragEntryId, dragEntryContent, dropBlock)
+        props.onDropEntryToBlock(dragEntryId, dropBlock)
     }
 };
 
@@ -39,14 +38,14 @@ const Block = ({ block, entries, onEntryClick, onEntryChange, onEntryEditCancel,
                         if (entry.edit == false) {
                             return <Entry
                                 key={entry.id}
-                                onClick={() => onEntryClick(block, entry.id)}
+                                onClick={() => onEntryClick(entry.id)}
                                 onDrop={onDrop}
                                 {...entry}
                             />
                         } else {
                             return <EntryEditor
                                 key={entry.id}
-                                onEntryChange={(id, content) => onEntryChange(block, id, content)}
+                                onEntryChange={(id, content) => onEntryChange(id, content)}
                                 onEntryEditCancel={onEntryEditCancel}
                                 {...entry}
                             />

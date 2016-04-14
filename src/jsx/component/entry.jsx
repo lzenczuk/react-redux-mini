@@ -6,10 +6,7 @@ const source = {
     beginDrag(props, monitor, component) {
 
         // dragged item description ###1>
-
-        // we don't need content, id should be enough but because of primitive
-        // model we sending it to have less work
-        const item = { id: props.id, content: props.content};
+        const item = { id: props.id};
         return item;
     }
 };
@@ -19,11 +16,10 @@ const target = {
 
         // >###1 monitor item: description from beginDrag
         let dragEntryId =  monitor.getItem().id;
-        let dragEntryContent =  monitor.getItem().content;
         let dropEntryId = component.props.id;
 
         // call on drop method that will dispatch event
-        props.onDrop(dragEntryId, dragEntryContent, dropEntryId)
+        props.onDrop(dragEntryId, dropEntryId)
     }
 }
 

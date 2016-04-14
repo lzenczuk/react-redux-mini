@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
-import _ from 'lodash';
+
+import Model from './model'
 import {ADD_ENTRY,
     MOVE_ENTRY,
     REMOVE_ENTRY,
@@ -11,167 +12,48 @@ import {ADD_ENTRY,
     DROP_ENTRY_ON_ENTRY,
     DROP_ENTRY_ON_BLOCK} from './actions';
 
-const initialState = {
-    canvas: {
-        values: {
-            entries: [
-                {
-                    id: 1,
-                    content: "value 1",
-                    edit: false
-                },
-                {
-                    id: 2,
-                    content: "value 2",
-                    edit: false
-                }
-            ]
-        },
-        customers: {
-            entries: []
-        },
-        problems: {
-            entries: []
-        }
-    },
-    newEntry: {
-        visible: false,
-        block: null
-    }
-};
 
-function canvasApp(state = initialState, action) {
+function _dragEntryOnEntry(action, state) {
+    let dragEntryId = action.dragEntryId;
+    let dropEntryId = action.dropEntryId;
+
+    let entryIndex = Model.getEntryIndex(state, dropEntryId);
+    let entry = Model.getEntry(state, dragEntryId);
+    let block = Model.getEntryBlock(state, dropEntryId);
+
+    return Model.insertEntryAt(Model.removeEntry(state, dragEntryId), block, entryIndex, entry.id, entry.content);
+}
+
+function _dragEntryOnBlock(action, state) {
+    let dragEntryId = action.dragEntryId;
+    let dropBlock = action.dropBlock;
+
+    let entry = Model.getEntry(state, dragEntryId);
+
+    return Model.appendEntry(Model.removeEntry(state, dragEntryId), dropBlock, entry.id, entry.content);
+}
+
+function canvasApp(state = Model.getInitialState(), action) {
 
     switch (action.type) {
         case ADD_ENTRY:
-            var tmpState = _.cloneDeep(state);
-            tmpState.canvas[action.block].entries.push({
-                id: new Date().getTime(),
-                content: action.content,
-                edit: false
-            });
-            tmpState.newEntry.visible = false;
-            tmpState.newEntry.block = null;
-            return tmpState;
+            return Model.hideNewEntryPopup(Model.appendEntry(state, action.block, new Date().getTime(), action.content));
         case REMOVE_ENTRY:
-            var tmpState = _.cloneDeep(state);
-            tmpState.canvas[action.block] = tmpState.canvas[action.block].filter((content => content.id != action.id))
-            return tmpState;
+            return Model.removeEntry(state, action.id);
         case EDIT_ENTRY:
-            var tmpState = _.cloneDeep(state);
-            tmpState.canvas[action.block].entries = tmpState.canvas[action.block].entries.map((entry => {
-                if (entry.id == action.id) {
-                    entry.edit = true;
-                } else {
-                    entry.edit = false;
-                }
-
-                return entry
-            }));
-
-            return tmpState;
+            return Model.switchEntryToEdit(state, action.id);
         case CANCEL_EDIT_ENTRY:
-            var tmpState = _.cloneDeep(state);
-
-            _.mapValues(tmpState.canvas, (block) => {
-                block.entries = block.entries.map(entry => {
-                    entry.edit = false;
-                    return entry
-                });
-
-                return block;
-            });
-            return tmpState;
+            return Model.cancelEntriesEdit(state);
         case CHANGE_ENTRY:
-            var tmpState = _.cloneDeep(state);
-            tmpState.canvas[action.block].entries = tmpState.canvas[action.block].entries.map((entry => {
-                if (entry.id == action.id) {
-                    entry.content = action.content;
-                }
-
-                entry.edit = false;
-
-                return entry
-            }));
-            return tmpState;
+            return Model.updateEntry(state, action.id, action.content);
         case NEW_ENTRY:
-            var tmpState = _.cloneDeep(state);
-            tmpState.newEntry.visible = true;
-            tmpState.newEntry.block = action.block;
-            return tmpState;
+            return Model.showNewEntryPopup(state, action.block);
         case CANCEL_NEW_ENTRY:
-            var tmpState = _.cloneDeep(state);
-            tmpState.newEntry.visible = false;
-            tmpState.newEntry.block = null;
-            return tmpState;
+            return Model.hideNewEntryPopup(state);
         case DROP_ENTRY_ON_ENTRY:
-
-            var tmpState = _.cloneDeep(state);
-
-            var dragEntryId =  action.dragEntryId;
-            var dragEntryContent =  action.dragEntryContent;
-            var dropEntryId = action.dropEntryId;
-
-            var dragBlock;
-            var dropBlock;
-
-            _.mapValues(tmpState.canvas, (block, key) => {
-                block.entries.forEach(entry => {
-                    if(entry.id==dragEntryId){
-                        dragBlock = key;
-                    }
-
-                    if(entry.id==dropEntryId){
-                        dropBlock = key;
-                    }
-                });
-            });
-
-            tmpState.canvas[dragBlock].entries = tmpState.canvas[dragBlock].entries.filter((content => content.id != dragEntryId))
-
-            let newEntries=[];
-            tmpState.canvas[dropBlock].entries.forEach(entry => {
-                if(entry.id==dropEntryId){
-                    newEntries.push({
-                        id: dragEntryId,
-                        content: dragEntryContent,
-                        edit: false
-                    })
-                }
-
-                newEntries.push(entry);
-            });
-
-            tmpState.canvas[dropBlock].entries=newEntries;
-
-            return tmpState;
+            return _dragEntryOnEntry(action, state);
         case DROP_ENTRY_ON_BLOCK:
-
-            var tmpState = _.cloneDeep(state);
-
-            var dragEntryId =  action.dragEntryId;
-            var dragEntryContent =  action.dragEntryContent;
-            var dropBlock = action.dropBlock;
-
-            var dragBlock;
-
-            _.mapValues(tmpState.canvas, (block, key) => {
-                block.entries.forEach(entry => {
-                    if(entry.id==dragEntryId){
-                        dragBlock = key;
-                    }
-                });
-            });
-
-            tmpState.canvas[dragBlock].entries = tmpState.canvas[dragBlock].entries.filter((content => content.id != dragEntryId))
-
-            tmpState.canvas[dropBlock].entries.push({
-                id: dragEntryId,
-                content: dragEntryContent,
-                edit: false
-            });
-
-            return tmpState;
+            return _dragEntryOnBlock(action, state);
         default:
             return state;
     }

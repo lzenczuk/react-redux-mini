@@ -30,10 +30,9 @@ export function cancelNewEntry(){
     }
 }
 
-export function editEntry(block, id){
+export function editEntry(id){
     return {
         type: EDIT_ENTRY,
-        block: block,
         id: id
     }
 }
@@ -46,10 +45,9 @@ export function cancelEditEntry(block, id){
     }
 }
 
-export function changeEntry(block, id, content){
+export function changeEntry(id, content){
     return {
         type: CHANGE_ENTRY,
-        block: block,
         id: id,
         content: content
     }
@@ -72,20 +70,18 @@ export function moveEntry(srcBlock, id, desBlock){
     }
 }
 
-export function dropEntryOnOtherEntry(dragEntryId, dragEntryContent, dropEntryId){
+export function dropEntryOnOtherEntry(dragEntryId, dropEntryId){
     return {
         type: DROP_ENTRY_ON_ENTRY,
         dragEntryId: dragEntryId,
-        dragEntryContent: dragEntryContent,
         dropEntryId: dropEntryId
     }
 }
 
-export function dropEntryOnBlock(dragEntryId, dragEntryContent, dropBlock){
+export function dropEntryOnBlock(dragEntryId, dropBlock){
     return {
         type: DROP_ENTRY_ON_BLOCK,
         dragEntryId: dragEntryId,
-        dragEntryContent: dragEntryContent,
         dropBlock: dropBlock
     }
 }

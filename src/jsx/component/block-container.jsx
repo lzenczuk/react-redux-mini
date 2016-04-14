@@ -14,11 +14,11 @@ const mapStateToProps = (state, { block }) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onEntryClick: (block, id) => {
-            dispatch(editEntry(block, id))
+        onEntryClick: (id) => {
+            dispatch(editEntry(id))
         },
-        onEntryChange: (block, id, content) => {
-            dispatch(changeEntry(block, id, content))
+        onEntryChange: (id, content) => {
+            dispatch(changeEntry(id, content))
         },
         onEntryEditCancel: () => {
             dispatch(cancelEditEntry())
@@ -26,11 +26,11 @@ const mapDispatchToProps = (dispatch) => {
         onNewEntryClick: (block) => {
             dispatch(newEntry(block))
         },
-        onDrop: (dragId, dragContent,  dropId) => {
-            dispatch(dropEntryOnOtherEntry(dragId, dragContent, dropId))
+        onDrop: (dragId,  dropId) => {
+            dispatch(dropEntryOnOtherEntry(dragId, dropId))
         },
-        onDropEntryToBlock: (dragId, dragContent, dropBlock) => {
-            dispatch(dropEntryOnBlock(dragId, dragContent, dropBlock))
+        onDropEntryToBlock: (dragId, dropBlock) => {
+            dispatch(dropEntryOnBlock(dragId, dropBlock))
         }
     }
 };
